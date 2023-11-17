@@ -1,0 +1,16 @@
+version: "3.8"
+services:
+
+    reset:
+      build:
+       context: .
+       dockerfile: Dockerfile
+      image: "nginx/perl:latest"
+      stdin_open: true
+      tty: true
+      container_name: abc
+      volumes:
+       - ./config:/etc/nginx
+       - ./modules:/opt/nginx-perl/modules
+      ports:
+       - 8300:80
