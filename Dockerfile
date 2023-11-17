@@ -1,6 +1,6 @@
 FROM nginx/perl:latest
 
-# install your additional perl modules here via
-# Currently buggy at the moment....
-# RUN cpnam ABC::XYZ
-# RUN cpanm Log::Log4perl
+MAINTAINER "freeperls" <berzileux@gmail.com>
+
+# install your additional perl modules tha is not part of the default
+# RUN ["cpanm", "a", "b", ...]

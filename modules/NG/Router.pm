@@ -5,15 +5,12 @@ use nginx;
 use strict;
 use warnings;
 
-use aliased "Log::Log4perl::Appender::Screen";
-use aliased "API::Hello";
+use Log::Log4perl qw(get_logger);
 use Try::Tiny;
+use aliased "API::Hello";
 
-my $logger = Screen->new(
-  autoflush => 1,
-  stdout    => 1,
-  utf8      => 1,
-);
+Log::Log4perl::init('/etc/nginx/log4perl.conf');
+my $logger = get_logger();
 
 my %routers = (
     '/v1/api/hello' => Hello->new(),
@@ -28,8 +25,8 @@ sub handler {
     $r->send_http_header("application/json");
     return OK if $r->header_only;
     my $route = $r->uri;
-    $logger->log(route => $r->uri);
-    print "buggy";
+    $logger->info("route => $route");
+
     #check if there is a route in place otherwise just output place welcome
     return $routers{$route}->handler($r) if (exists $routers{$route});
 
