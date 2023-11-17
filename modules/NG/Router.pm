@@ -25,10 +25,13 @@ sub handler {
     $r->send_http_header("application/json");
     return OK if $r->header_only;
     my $route = $r->uri;
-    $logger->info("route => $route");
+    my $existing = exists $routers{$route};
+    my $found = ($existing) ? "route exists":"undefined";
+
+    $logger->info( qq[route => $route, exists => $found ] );
 
     #check if there is a route in place otherwise just output place welcome
-    return $routers{$route}->handler($r) if (exists $routers{$route});
+    return $routers{$route}->handler($r) if ($existing);
 
 	 $r->print("No routes has been defined. $route");
 
